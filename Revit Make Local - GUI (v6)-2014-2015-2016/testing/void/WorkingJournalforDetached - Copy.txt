@@ -1,0 +1,95 @@
+' 0:< Initial VM: Avail 134217399 MB, Used 18 MB, Peak 18; RAM: Avail 23736 MB, Used 56 MB, Peak 18 
+' 0:< GUI Resource Usage GDI: Avail 9995, Used 5, User: Used 3 
+'C 06-Mar-2017 10:42:24.188;   0:< started recording journal file 
+' Build: 20170118_1100(x64)
+' Branch: RELEASE_2017_R2
+Dim Jrn
+Set Jrn = CrsJournalScript
+Jrn.Data "JournalDefaultTemplate"  _
+        , "2017 - Silman=L:\Drafting Resources\Revit\Templates\2017 - Silman.rte"
+'H 06-Mar-2017 10:42:31.188;   0:< 
+Jrn.Data "JournalDefaultViewDiscipline"  _
+        , "Coordination"
+'H 06-Mar-2017 10:42:31.188;   0:< 
+Jrn.Directive "Version"  _
+        , "2017.000", "2.153"
+'H 06-Mar-2017 10:42:31.188;   0:< 
+Jrn.Directive "Username"  _
+        , "hazell@silman.com"
+'H 06-Mar-2017 10:42:31.188;   0:< 
+Jrn.Directive "CategoryDisciplineFilter"  _
+        , -1
+'H 06-Mar-2017 10:42:31.189;   0:< 
+Jrn.Directive "DisciplineOption"  _
+        , 5517
+'H 06-Mar-2017 10:42:31.189;   0:< 
+Jrn.Directive "TabDisplayOptions"  _
+        , "StayOnModifyInProject", 1
+'H 06-Mar-2017 10:42:31.189;   0:< 
+Jrn.Directive "TabDisplayOptions"  _
+        , "StayOnModifyInFamily", 1
+'H 06-Mar-2017 10:42:31.189;   0:< 
+Jrn.Directive "TabDisplayOptions"  _
+        , "ActiveCtOnSelection", 1
+'H 06-Mar-2017 10:42:31.189;   0:< 
+Jrn.Directive "AllowLinkSelection"  _
+        , 1
+'H 06-Mar-2017 10:42:31.189;   0:< 
+Jrn.Directive "AllowFaceSelection"  _
+        , 0
+'H 06-Mar-2017 10:42:31.189;   0:< 
+Jrn.Directive "AllowUnderlaySelection"  _
+        , 0
+'H 06-Mar-2017 10:42:31.189;   0:< 
+Jrn.Directive "AllowPinnedSelection"  _
+        , 1
+'H 06-Mar-2017 10:42:31.189;   0:< 
+Jrn.Directive "ThinLinesEnabled"  _
+        , 0
+
+Jrn.Directive "IdleTimeTaskSymbol"  _
+        , "0.ExternalEvent"
+
+Jrn.Directive "IdleTimeTaskSymbol"  _
+        , "1.OnIdleTask"
+ 'E 06-Mar-2017 10:42:54.520;   0:< 
+ Jrn.Command "StartupPage" , "Open an existing project , ID_REVIT_FILE_OPEN"
+ ' 0:< ::2:: Delta VM: Avail -154 -> 134182411 MB, Used +10 -> 740 MB; RAM: Avail -29 -> 23087 MB, Used +30 -> 669 MB, Peak +20 -> 669 MB 
+ ' 0:< GUI Resource Usage GDI: Avail 9653, Used 347, User: Used 313 
+ 'H 06-Mar-2017 10:43:01.775;   0:< 
+ Jrn.Data "FileOpenSubDialog"  _
+         , "DetachCheckBox", "True"
+ ' 0:< ::2:: Delta VM: Avail +4 -> 134182415 MB, Used 740 MB; RAM: Avail -14 -> 23073 MB, Used +0 -> 670 MB, Peak +0 -> 670 MB 
+ ' 0:< GUI Resource Usage GDI: Avail 9664, Used 336, User: Used 314 
+ 'H 06-Mar-2017 10:43:12.202;   0:< 
+ Jrn.Data "FileOpenSubDialog"  _
+         , "DetachCheckBox", "False"
+ ' 0:< ::2:: Delta VM: Avail +13 -> 134182428 MB, Used +1 -> 741 MB; RAM: Avail +4 -> 23077 MB, Used +3 -> 673 MB, Peak +3 -> 673 MB 
+ ' 0:< GUI Resource Usage GDI: Avail 9652, Used 348, User: Used 319 
+ 'H 06-Mar-2017 10:43:21.284;   0:< 
+ Jrn.Data "FileOpenSubDialog"  _
+         , "OpenAsLocalCheckBox", "True"
+ 'H 06-Mar-2017 10:43:22.016;   0:< 
+ Jrn.Data "FileOpenSubDialog"  _
+         , "DetachCheckBox", "True"
+ 'H 06-Mar-2017 10:43:22.016;   0:< 
+ Jrn.Data "FileOpenSubDialog"  _
+         , "OpenAsLocalCheckBox", "False"
+ 'H 06-Mar-2017 10:43:23.457;   0:< 
+ Jrn.Data "File Name"  _
+         , "IDOK", "P:\W3334 Palisades Recreation Center\Drawings\Void\Wxxxx-S17-Central.rvt"
+ 'H 06-Mar-2017 10:43:23.458;   0:< 
+ Jrn.Data "WorksetConfig"  _
+         , "Custom", 0
+ ' 0:< TaskDialog "Detaching this model will create an independent model. You will be unable to synchronize your changes with the original central model.
+ 'What do you want to do?"
+ 'Id : TaskDialog_Detach_Model_From_Central
+ 'CommonButtons : Cancel
+ 'Command Links:
+ '1001 : Detach and preserve worksets
+ '1002 : Detach and discard worksets
+ 'DefaultButton : 1001 
+ 'H 06-Mar-2017 10:43:25.368;   0:< 
+ Jrn.Data "TaskDialogResult"  _
+         , "Detaching this model will create an independent model. You will be unable to synchronize your changes with the original central model." & vbLf & "What do you want to do?",  _
+          "Detach and preserve worksets", "1001"

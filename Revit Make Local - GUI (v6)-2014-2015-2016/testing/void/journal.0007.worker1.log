@@ -1,0 +1,147 @@
+' 0:< Initial VM: Avail 134217463 MB, Used 15 MB, Peak 15; RAM: Avail 23350 MB, Used 40 MB, Peak 15 
+' 0:< GUI Resource Usage GDI: Avail 9996, Used 4, User: Used 1 
+'C 06-Mar-2017 15:04:19.157;   0:< RevitWorker.exe 1 
+'C 06-Mar-2017 15:04:19.163;   0:< Worker Application Data: isWorkerForRevit=1, Name=RevitApplication, Ver=2015 
+'C 06-Mar-2017 15:04:19.165;   0:< ->UI-less InitNativeInstance 
+' 0:< Options::loadOptions: m_strDataLibraryLocations=Imperial Library=L:\Drafting Resources\Revit\Content\2017\3D Components, Imperial Detail Library=L:\Drafting Resources\Revit\Content\2017\Detail Components (defaultLib==\Library) 
+' 0:< ::0:: Delta VM: Avail -175 -> 134217288 MB, Used +31 -> 47 MB, Peak +38 -> 54 MB; RAM: Avail -12 -> 23339 MB, Used +48 -> 88 MB, Peak +48 -> 88 MB 
+' 0:< GUI Resource Usage GDI: Avail 9996, Used 4, User: Used 1 
+' 0:< SystemSettings: 
+' 0:<                    4=multiCoreCharacteristic 
+' 0:<                 true=isDotNetInstalled 
+' 0:<    4.6.01586(394802)=dotNetInstalledVersionString 
+' 0:<                false=isProcessUserModeExceptionPolicyDisabledForCallbackFilter 
+' 0:< ::0:: Delta VM: Avail -85 -> 134217204 MB, Used +12 -> 59 MB, Peak +5 -> 59 MB; RAM: Avail -29 -> 23311 MB, Used +22 -> 110 MB, Peak +22 -> 110 MB 
+' 0:< GUI Resource Usage GDI: Avail 9980, Used 20, User: Used 10 
+' 0:< Autodesk Revit 2017 
+' 0:< 64-bit load point = C:\Program Files\Autodesk\Revit 2017 
+' 0:< this journal =  
+' 0:< API_SUCCESS { Registered an external service: Name(NavisWorks Draw Service); VendorId(ADSK); ServiceId(e454a471-b9f3-4cb7-96b1-bab4cf7742a6) } 
+' 0:< API_SUCCESS { Registered an external service: Name(External Resource Service); VendorId(ADSK); ServiceId(b3892e5f-9161-4bbc-958a-c8ef75e94e96) } 
+' 0:< API_SUCCESS { Registered an external service: Name(NavisworksExportService); VendorId(ADSK); ServiceId(a9bdf0fd-2632-429e-bc35-50ebc2b824d2) } 
+' 0:< API_SUCCESS { Registered an external service: Name(Code Checking Parameter Service); VendorId(ADSK); ServiceId(de6db8de-dea6-40bd-9503-4ffe62ff6143) } 
+' 0:< API_SUCCESS { Registered an external service: Name(FramingProfileService); VendorId(ADSK); ServiceId(b2f816c0-6493-4537-8067-78a4e67f559e) } 
+' 0:< API_SUCCESS { Registered an external service: Name(Modify Connection Parameters Service); VendorId(ADSK); ServiceId(e9c0f948-320e-4e7f-a573-10755555305d) } 
+' 0:< API_SUCCESS { Registered an external service: Name(Connection Type Changed Service); VendorId(ADSK); ServiceId(e31c3100-9cab-4303-b85b-4171703ce1c4) } 
+' 0:< API_SUCCESS { Registered an external service: Name(SteelConnectionsService); VendorId(ADSK); ServiceId(282385f9-9627-4057-8b74-826d019f103c) } 
+' 0:< API_SUCCESS { Registered an external service: Name(Section Type Parameter Service); VendorId(ADSK); ServiceId(c42c9b55-c491-4611-97e9-9e617958e13e) } 
+' 0:< API_SUCCESS { Registered an external service: Name(Internal Forces Service); VendorId(ADSK); ServiceId(a97444aa-af8d-4a1e-af1f-fa7b77b368ee) } 
+' 0:< API_SUCCESS { Registered an external service: Name(Duct Fitting/Accessory Pressure Drop Calculator); VendorId(ADSK); ServiceId(785d0bd7-3088-489a-af7a-593fc32e2540) } 
+' 0:< API_SUCCESS { Registered an external service: Name(Pipe Fitting/Accessory Pressure Drop Calculator); VendorId(ADSK); ServiceId(b8656566-e4ef-4e6a-bedb-9ecc6b5a2780) } 
+' 0:< API_SUCCESS { Registered an external service: Name(Duct Pressure Drop Calculator); VendorId(ADSK); ServiceId(8c707bd6-ecd6-4150-a0df-bd6c85dd9bb0) } 
+' 0:< API_SUCCESS { Registered an external service: Name(Pipe Pressure Drop Calculator); VendorId(ADSK); ServiceId(62d13e0c-9fe1-4d8e-a0c7-1f93d24cf3f3) } 
+' 0:< API_SUCCESS { Registered an external service: Name(Plumbing Flow Calculator); VendorId(ADSK); ServiceId(bf0da776-5307-4747-8285-f358e92a90d0) } 
+' 0:< API_SUCCESS { Registered an external service: Name(IFC Export Service); VendorId(ADSK); ServiceId(d8b95737-f943-414c-9ad7-86785bf1acbc) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Revit IFC Exporter); VendorId(ADSK); ServerId(ef8d0493-7f36-42b5-b9aa-8aaac716482b); ServiceId(d8b95737-f943-414c-9ad7-86785bf1acbc) } 
+' 0:< API_SUCCESS { Registered an external service: Name(IFC Import Service); VendorId(ADSK); ServiceId(98d317e2-e943-4cc0-a3da-2edf32a5d942) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Revit IFC Importer); VendorId(ADSK); ServerId(660a7370-f6d6-43c8-8456-6b2eea785110); ServiceId(98d317e2-e943-4cc0-a3da-2edf32a5d942) } 
+'C 06-Mar-2017 15:04:19.519;   0:< manage debug modes 
+'C 06-Mar-2017 15:04:19.520;   0:< MFCApp::testGraphicsHardware 
+' 0:< Revit Graphics Information 
+' 0:< 	Current Mode : DirectX Hardware 
+' 0:< 	Use Hardware: ON 
+' 0:< 	Use Overlays : ON 
+' 0:< START CanUseHardware(forced) 
+' 1:< ::0:: Delta VM: Avail +7 -> 134217211 MB, Used +4 -> 64 MB, Peak +11 -> 71 MB; RAM: Avail -16 -> 23295 MB, Used +2 -> 113 MB, Peak +3 -> 114 MB 
+' 1:< GUI Resource Usage GDI: Avail 9980, Used 20, User: Used 10 
+' 1:< 
+'OGS Device Memory Size: 18316 MB 
+' 1:< ::0:: Delta VM: Avail -112 -> 134217099 MB, Used +37 -> 101 MB, Peak +32 -> 104 MB; RAM: Avail -19 -> 23277 MB, Used +14 -> 127 MB, Peak +14 -> 129 MB 
+' 1:< GUI Resource Usage GDI: Avail 9980, Used 20, User: Used 12 
+' 1:< DX Device: DirectX 11, Hardware 
+' 1:< DX Device: DirectX 11, WARP 
+'C 06-Mar-2017 15:04:19.886;   1:< START video card certification 
+' 1:< ::0:: Delta VM: Avail -20 -> 134217080 MB, Used +0 -> 102 MB, Peak +2 -> 106 MB; RAM: Avail -8 -> 23269 MB, Used +2 -> 130 MB, Peak +5 -> 134 MB 
+' 1:< GUI Resource Usage GDI: Avail 9980, Used 20, User: Used 12 
+' 1:< 
+'Current driver version: 20.19.15.4531
+'Certified driver(s):  
+' 1:< VIDEO CARD ENVIRONMENT: CARD="NVIDIA Quadro M1000M" ManufacturerID="10DE" DeviceID="13B1" osID="8000" DRIVER="20.19.15.4531" DEVICE="DX11" FL_Caps="50" (Shader Model) 
+'C 06-Mar-2017 15:04:19.919;   1:< FINISH video card certification 
+'  0.393644   1:<<<CanUseHardware(forced) 
+' 0:< 
+'Can use hardware=y
+'Hardware support flags:
+'FeatureLevelLow=n
+'DrvOlderThanTested=n
+'DrvNewerThanTested=n
+'CardIsNotListed=y
+'NotCertifiedEnv=n
+'3GBSwitchIsOn=n
+'SoftwareModeForced=n 
+' 0:< FINISH CanUseHardware(forced) 
+'C 06-Mar-2017 15:04:19.923;   0:< MFCApp::testMSAA 
+' 0:< Revit Graphics Information 
+' 0:< 	Current Mode : DirectX Hardware 
+' 0:< 	Use Hardware: ON 
+' 0:< 	Use Overlays : ON 
+'C 06-Mar-2017 15:04:19.929;   0:< <-UI-less InitNativeInstance 
+'C 06-Mar-2017 15:04:19.930;   0:< ->UI-less InitManagedInstance 
+' 0:< ::0:: Delta VM: Avail -715 -> 134216365 MB, Used +87 -> 190 MB, Peak +83 -> 190 MB; RAM: Avail -98 -> 23172 MB, Used +113 -> 244 MB, Peak +109 -> 244 MB 
+' 0:< GUI Resource Usage GDI: Avail 9980, Used 20, User: Used 13 
+' 0:< To make IFC server work. 
+' 0:< ExternalDBApplication KeynoteDBServer.ServerApp (C:\Program Files\Autodesk\Revit 2017\AddIns\Keynote\KeynoteDBServer.dll) was not loaded in RevitWorker 
+' 0:< API_SUCCESS { Registered an external server: Name(Plumbing Fixture Flow); VendorId(ADSK); ServerId(56121d7d-e1d7-42a3-bed8-f4d1d32058c8); ServiceId(bf0da776-5307-4747-8285-f358e92a90d0) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Simplified Colebrook Equation); VendorId(ADSK); ServerId(ea275fb1-5d7b-47d6-b828-bf856df9bfd5); ServiceId(62d13e0c-9fe1-4d8e-a0c7-1f93d24cf3f3) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Altshul-Tsal Equation); VendorId(ADSK); ServerId(042a10e0-8d24-46a4-9596-d192b3125d0c); ServiceId(8c707bd6-ecd6-4150-a0df-bd6c85dd9bb0) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Haaland Equation); VendorId(USERADDIN); ServerId(2e9a77c0-62a0-4693-9442-33312be60ad7); ServiceId(8c707bd6-ecd6-4150-a0df-bd6c85dd9bb0) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Haaland Equation); VendorId(USERADDIN); ServerId(58ea1b7c-2fca-453f-9ab9-7a3b9927ecc1); ServiceId(62d13e0c-9fe1-4d8e-a0c7-1f93d24cf3f3) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Colebrook Equation); VendorId(USERADDIN); ServerId(e395a0ec-48a4-4255-b957-afbb3d73cb67); ServiceId(8c707bd6-ecd6-4150-a0df-bd6c85dd9bb0) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Colebrook Equation); VendorId(USERADDIN); ServerId(0875f550-6141-4e34-a6b7-547cf9cfda01); ServiceId(62d13e0c-9fe1-4d8e-a0c7-1f93d24cf3f3) } 
+' 0:< API_SUCCESS { Starting External DB Application: StraightSegmentCalculationServersApp, Class: StraightSegmentCalculationServers.ServerApp, Vendor : ADSK(Autodesk, www.autodesk.com), Assembly: C:\Program Files\Autodesk\Revit 2017\AddIns\MEPCalculation\StraightSegmentCalculationServers.dll } 
+' 0:< API_SUCCESS { Registered an external server: Name(Not Defined); VendorId(ADSK); ServerId(76eff5da-2e71-45f7-b940-cc5716328ba0); ServiceId(785d0bd7-3088-489a-af7a-593fc32e2540) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Coefficient from ASHRAE Table); VendorId(ADSK); ServerId(8baf7d75-8b9b-46d0-b8ce-3ad1c19e6b19); ServiceId(785d0bd7-3088-489a-af7a-593fc32e2540) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Specific Coefficient); VendorId(ADSK); ServerId(5a598293-1504-46cc-a9c0-de55c82848b9); ServiceId(785d0bd7-3088-489a-af7a-593fc32e2540) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Specific Loss); VendorId(ADSK); ServerId(46245996-eebb-4536-ac17-9c1cd917d8cf); ServiceId(785d0bd7-3088-489a-af7a-593fc32e2540) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Not Defined); VendorId(ADSK); ServerId(61e7b8e1-16d1-4fe4-82f0-327af736323f); ServiceId(b8656566-e4ef-4e6a-bedb-9ecc6b5a2780) } 
+' 0:< API_SUCCESS { Registered an external server: Name(K Coefficient from Table); VendorId(ADSK); ServerId(51dd5e98-a9dd-464b-b286-4a37953610bf); ServiceId(b8656566-e4ef-4e6a-bedb-9ecc6b5a2780) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Specific Coefficient); VendorId(ADSK); ServerId(32d58662-b467-4f7b-b728-f6ad7b7ba5e3); ServiceId(b8656566-e4ef-4e6a-bedb-9ecc6b5a2780) } 
+' 0:< API_SUCCESS { Registered an external server: Name(Specific Loss); VendorId(ADSK); ServerId(16f4f7be-0ac0-461d-a9a4-1d3511cd280e); ServiceId(b8656566-e4ef-4e6a-bedb-9ecc6b5a2780) } 
+' 0:< API_SUCCESS { Starting External DB Application: FittingAndAccessoryCalculationServers, Class: FittingAndAccessoryCalculationServers.ServerApp, Vendor : ADSK(Autodesk, www.autodesk.com), Assembly: C:\Program Files\Autodesk\Revit 2017\AddIns\MEPCalculation\FittingAndAccessoryCalculationServers.dll } 
+' 0:< API_SUCCESS { Registered an external server: Name(SteelConnectionsServer); VendorId(ADSK); ServerId(9c209d4a-ec98-460f-bfde-38f17a3443b4); ServiceId(282385f9-9627-4057-8b74-826d019f103c) } 
+' 0:< ::0:: Delta VM: Avail -10 -> 134216356 MB, Used +2 -> 192 MB, Peak +2 -> 193 MB; RAM: Avail -6 -> 23166 MB, Used +10 -> 254 MB, Peak +10 -> 255 MB 
+' 0:< GUI Resource Usage GDI: Avail 9980, Used 20, User: Used 13 
+' 0:< API_SUCCESS { Registered an external server: Name(FramingProfileServer); VendorId(ADSK); ServerId(54e490cd-8809-4dbb-84dd-dc0bc6cb1712); ServiceId(b2f816c0-6493-4537-8067-78a4e67f559e) } 
+' 0:< API_SUCCESS { Starting External DB Application: ExternalResourceDBServer, Class: RvtSteelConnectionsDB.SteelConnectionDBApplication, Vendor : ADSK(Autodesk, www.autodesk.com), Assembly: C:\Program Files\Autodesk\Revit 2017\AddIns\SteelConnections\RvtSteelConnectionsDB.dll } 
+'C 06-Mar-2017 15:04:22.692;   0:< <-UI-less InitManagedInstance 
+'C 06-Mar-2017 15:04:22.694;   0:< Start RevitProcessMonitor 
+'C 06-Mar-2017 15:04:22.695;   0:< Log Summary 
+' 0:< .Marshalling 
+' 0:< ...CompactCaching = 1 (Enabled) 
+' 0:< .ThreadPool 
+' 0:< ...ActivePoolSize = 26 
+' 0:< ...ConfiguredPoolSize = automatic 
+' 0:< ...ParallelCores = 4 
+' 0:< ...RequestedPoolSize = automatic 
+' 0:< .Tuning 
+' 0:< ...ElemTable = 1 (Serial except when multithreaded) 
+'C 06-Mar-2017 15:04:22.723;   0:< logging slave opened MasterQueue Session23628_P0MasterQueue 
+'C 06-Mar-2017 15:04:22.726;   0:< logging slave opened SlaveQueue Session23628_P1SlaveQueue 
+'C 06-Mar-2017 15:04:22.728;   0:< logging started queue minder  
+'C 06-Mar-2017 15:04:22.729;   0:< logging started worker services  
+'C 06-Mar-2017 15:04:22.730;   0:< ->Worker accepting requests 
+' 0:< ::0:: Delta VM: Avail -4 -> 134216352 MB, Used +0 -> 193 MB, Peak +2 -> 195 MB; RAM: Avail -137 -> 23029 MB, Used +1 -> 256 MB, Peak +2 -> 257 MB 
+' 0:< GUI Resource Usage GDI: Avail 9980, Used 20, User: Used 14 
+'C 06-Mar-2017 15:04:35.065;   0:< logging slave liberated  
+'C 06-Mar-2017 15:04:35.068;   0:< <-Worker accepting requests 
+' 0:< [000040c8]QueueMinder stopped 
+'C 06-Mar-2017 15:04:35.071;   0:< logging finished virtualization services  
+'C 06-Mar-2017 15:04:35.073;   0:< logging finished worker services  
+'C 06-Mar-2017 15:04:35.078;   0:< logging erased queues  
+'C 06-Mar-2017 15:04:35.079;   0:< Log Summary 
+' 0:< .Count 
+' 0:< ...WorkerRequestHandledDeferredSecondary = 1 
+' 0:< ...WorkerRequestHandledImmediate = 1 
+'C 06-Mar-2017 15:04:35.084;   0:< ->UI-less ExitManagedInstance 
+' 0:< Forcibly removing all update triggers for all Updaters 
+' 0:< Unregistering all external services. 
+'C 06-Mar-2017 15:04:35.104;   0:< <-UI-less ExitManagedInstance 
+'C 06-Mar-2017 15:04:35.105;   0:< ->UI-less ExitNativeInstance 
+' 0:< ::0:: Delta VM: Avail +47 -> 134216400 MB, Used -27 -> 166 MB; RAM: Avail 23029 MB, Used -6 -> 251 MB 
+' 0:< GUI Resource Usage GDI: Avail 9988, Used 12, User: Used 11 
+' 0:<                  FormOrAbandon exec=     1 (parallel=     0)   self=    0.000062 sec (avg=  0.000) 
+' 0:<            InstrumentationTask exec=     1 (parallel=     1)   
+' 0:<                    QueueMinder exec=     1 (parallel=     1)   
+' 0:<                 TaskFileExists exec=   117 (parallel=   110)   
+'C 06-Mar-2017 15:04:35.674;   0:< <-UI-less ExitNativeInstance 
+'C 06-Mar-2017 15:04:35.676;   0:< End RevitProcessMonitor 

@@ -1,0 +1,18 @@
+' 0:< Initial VM: Avail 134217399 MB, Used 18 MB, Peak 18; RAM: Avail 23736 MB, Used 56 MB, Peak 18 
+' 0:< GUI Resource Usage GDI: Avail 9995, Used 5, User: Used 3 
+'C 06-Mar-2017 10:42:24.188;   0:< started recording journal file 
+' Build: 20170118_1100(x64)
+' Branch: RELEASE_2017_R2
+Dim Jrn
+Set Jrn = CrsJournalScript
+Jrn.Command "StartupPage" , "Open an existing project , ID_REVIT_FILE_OPEN"
+Jrn.Data "FileOpenSubDialog" , "DetachCheckBox", "True"
+Jrn.Data "FileOpenSubDialog" , "DetachCheckBox", "False"
+Jrn.Data "FileOpenSubDialog" , "OpenAsLocalCheckBox", "True"
+Jrn.Data "FileOpenSubDialog" , "DetachCheckBox", "True"
+Jrn.Data "FileOpenSubDialog" , "OpenAsLocalCheckBox", "False" 
+Jrn.Data "File Name"  _
+        , "IDOK", "P:\W3334 Palisades Recreation Center\Drawings\Void\Wxxxx-S17-Central.rvt"
+Jrn.Data "WorksetConfig"  _
+        , "Custom", 0
+Jrn.Data "TaskDialogResult" , "Detaching this model will create an independent model. You will be unable to synchronize your changes with the original central model." & vbLf & "What do you want to do?", "Detach and preserve worksets", "1001"
