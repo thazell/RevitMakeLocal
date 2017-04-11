@@ -6,7 +6,9 @@
 ; RESOURCES:
 ; http://www.autohotkey.com/docs/commands/ListView.htm 
 
-#NoEnv  					; Recommended for performance and compatibility with future AutoHotkey releases.
+appdata := A_appdata
+
+;#NoEnv  					; Recommended for performance and compatibility with future AutoHotkey releases.
 SendMode Input  				; Recommended for new scripts due to its superior speed and reliability.
 #SingleInstance force				; If the script is currently running this will kill it
 #WinActivateForce
@@ -37,7 +39,6 @@ getLNKorEXE(){ ; SKAN 14-Apr-2010 @ www.autohotkey.com/forum/viewtopic.php?p=347
  VarSetCapacity(suInfo,68,0), DllCall("GetStartupInfoA", UInt,&suInfo) 
 Return DllCall( "MulDiv", UInt,NumGet(SuInfo,12), Int,1, Int,1, Str ) 
 }
-
 
 If 1 <> SC
 {
@@ -131,6 +132,8 @@ Gui, Add, Picture, w120 h120 vMyLogo gMyLogo, %A_ScriptDir%\Logo.jpg
 gui, font, s10 Verdana bold
 Gui, Show, W700, %DialogTitle%
 gui, font
+
+GoSub, ButtonNav2Central
 
 return
 
@@ -738,17 +741,47 @@ IfWinExist Revit %DISCIPLINE% %VERSION%
 else
 {
 ; Open Revit Discipline 20XX and open the file
-    MsgBox, 4,, Would you like to open in Viewer Mode only?
+
+MsgBox, 4,, Would you like to open in Viewer Mode only?
     IfMsgBox, No
-	{
-	Run %AppPath%Revit.exe "%DESTINATION%%LOCALFILE%",,max
-	}
-	else
-	{
-		;Run %AppPath%Revit.exe /viewer "%DESTINATION%%LOCALFILE%",,max
-		3 = DETACH
-		Goto, OPENDETACHED
-	}
+		{
+		IfExist, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%\Revit.ini ;We need to test if the contents of the folder exists
+			{
+			;MsgBox, The target file does exist we will use it. 
+			;if yes then use it
+			FileMove, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%\Revit.ini, %appdata%\Autodesk\Revit\Autodesk Revit 20%VRSN%\Revit.ini, 1
+			FileMove, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%\KeyboardShortcuts.xml, %appdata%\Autodesk\Revit\Autodesk Revit 20%VRSN%\KeyboardShortcuts.xml, 1
+			}
+		else
+			{
+			;if no fill use them (copy down)
+			;MsgBox, the target file does not exist.  We arent going to do anything.
+			
+			}
+			
+		Run %AppPath%Revit.exe "%DESTINATION%%LOCALFILE%",,max
+		}
+		
+		
+	IfMsgBox, Yes ; use revit viewer
+		{
+		IfExist, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%\Revit.ini ;Using viewer if contents of the folder exist, do nothing
+			{
+			;MsgBox, The target file does exist and so we wont make another copy 
+			;if skip
+			}
+		else
+			{
+			;if yes skip
+			;MsgBox, The target file does not exist so we will copy it into the folder. 
+			FileCreateDir, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%
+			FileCopy, %appdata%\Autodesk\Revit\Autodesk Revit 20%VRSN%\Revit.ini, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%\, 0
+			FileCopy, %appdata%\Autodesk\Revit\Autodesk Revit 20%VRSN%\KeyboardShortcuts.xml, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%\, 0
+			}
+			;We need to test if the contents of the folder are empty
+			3 = DETACH
+			Goto, OPENDETACHED
+		}
 }
 
 
