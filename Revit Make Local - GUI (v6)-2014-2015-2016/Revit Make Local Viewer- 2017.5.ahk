@@ -6,9 +6,7 @@
 ; RESOURCES:
 ; http://www.autohotkey.com/docs/commands/ListView.htm 
 
-appdata := A_appdata
-
-;#NoEnv  					; Recommended for performance and compatibility with future AutoHotkey releases.
+#NoEnv  					; Recommended for performance and compatibility with future AutoHotkey releases.
 SendMode Input  				; Recommended for new scripts due to its superior speed and reliability.
 #SingleInstance force				; If the script is currently running this will kill it
 #WinActivateForce
@@ -22,7 +20,8 @@ StringUpper,3 ,3				; "3" - Third command line parameter in the Target field of 
 
 SettingsINI = %A_ScriptDir%\Settings.ini
 IniRead, ProjectsINI, %SettingsINI%, PATHS, ProjectsINI		; Path for ProjectsINI
-IniRead, FolderProjects, %SettingsINI%, PATHS, Projects		; Path for button "Navigate to Central File"
+IniRead, FolderCentral, %SettingsINI%, PATHS, Projects		; Path for button "Navigate to Central File"
+IniRead, FolderLinks, %SettingsINI%, PATHS, Links		; Path for LinkFiles
 IniRead, FolderLocals, %SettingsINI%, PATHS, Locals		; Path for Local Files Folder
 IniRead, URL, %SettingsINI%, PATHS, URL				; Path for URL launched when clicking on logo
 IniRead, HelpURL, %SettingsINI%, PATHS, HelpURL			; Path for URL containing help documentation
@@ -40,13 +39,14 @@ getLNKorEXE(){ ; SKAN 14-Apr-2010 @ www.autohotkey.com/forum/viewtopic.php?p=347
 Return DllCall( "MulDiv", UInt,NumGet(SuInfo,12), Int,1, Int,1, Str ) 
 }
 
+
 If 1 <> SC
 {
 Goto, CreateGui
 }
 Else
 {
-	CENTRALFILE = %2%					; Populate variable CENTRAFILE (if GUI is used, it will be populated by what the user double/right-clicks on)
+	CENTRALFILE = %2%					; Populate variable CENTRALFILE (if GUI is used, it will be populated by what the user double/right-clicks on)
 	FolderCentral = %A_WorkingDir%				; This sets the central folder to the shortcut's "Start in" field
 	Goto, LocalOperations	
 }
@@ -83,7 +83,6 @@ Gui, Add, Text, cBlue yp x38, 1234 DreamHouse A11_Central.rvt
 Gui, Add, Text, cBlack yp x+5, (dashes can be any character)
 Gui, font, s10
 Gui, Add, Text, vInstructions cRed x10 yp+20, Right-Click a project and pick an option (or Double-Click to run the default option)
-Gui, Add, Button, vButtonNav2Central gButtonNav2Central W120 H50 y10 Default, Go to Central`nFile Folder
 Gui, font
 
 Gui, Add, Checkbox, vCreateShortcut checked%CreateSC% y+27 , Add Desktop Shortcut
@@ -101,30 +100,12 @@ ImageListID2 := IL_Create(10, 10, true)  ; A list of large icons to go with the 
 LV_SetImageList(ImageListID1)
 LV_SetImageList(ImageListID2)
 
-; Create a Right-Click context menu:
-
-If (RCoption = 1) {
-   RCDefault = Create Local && Open
-}
-If (RCoption = 2) {
-   RCDefault = Create Local && Specify Worksets to open
-}
-If (RCoption = 3) {
-   RCDefault = Open a Detached Local copy
-}
-
-Menu, MyContextMenu, Add, Create Local && Open, RightClickOpen
-Menu, MyContextMenu, Add, Create Local && Specify Worksets to open, RightClickSpecify
-Menu, MyContextMenu, Add, Open a Detached Local copy, RightClickDetach
-Menu, MyContextMenu, Default, %RCDefault%						; Make this option a bold font to indicate that double-clicking will launch this by default
 
 ; Display the window and return. The OS will notify the script
 ; whenever the user performs an eligible action:
 GuiControl, Disable, MyListView
 GuiControl, Hide, Instructions
 GuiControl, Disable, CreateShortcut
-
-LV_Add("Icon" . 0, "Navigate to the Central File folder", "")				; Listview is disabled until a folder is selected
 LV_ModifyCol() 										; Auto-size each column to fit its contents.
 							
 Gui, Add, Button, Y130 W120 vButtonHelp gButtonHelp, Help Me!
@@ -132,9 +113,7 @@ Gui, Add, Picture, w120 h120 vMyLogo gMyLogo, %A_ScriptDir%\Logo.jpg
 gui, font, s10 Verdana bold
 Gui, Show, W700, %DialogTitle%
 gui, font
-
-GoSub, ButtonNav2Central
-
+goto Previewloopfiles
 return
 
 ButtonHelp: ;---####--------------------------Online Help
@@ -147,20 +126,6 @@ MyLogo: ;---####------------------------------URL will be opened when logo is cl
 run %URL%
 return
 
-ButtonNav2Central: ;---####-------------------Navigate to Central file folder
-
-Gui +OwnDialogs  									; Forces user to dismiss the following dialog before using main window.
-FileSelectFolder, FolderCentral, %FolderProjects%, 0, Select the Central File folder containing the RVT project you want to work in
-if not FolderCentral  									; The user canceled the dialog.
-    return
-
-GoSub, ClearListView									;We want the list view to only show us the contents of the selected folder, so we always start by clearing it
-
-; Check if the last character of the folder name is a backslash, which happens for root
-; directories such as C:\. If it is, remove it to prevent a double-backslash later on.
-StringRight, LastChar, FolderCentral, 1
-if LastChar = \
-    StringTrimRight, FolderCentral, FolderCentral, 1  					; Remove the trailing backslash.
 
 ; Ensure the variable has enough capacity to hold the longest file path. This is done
 ; because ExtractAssociatedIconA() needs to be able to store a new filename in it.
@@ -168,70 +133,51 @@ VarSetCapacity(Filename, 260)
 sfi_size = 352
 VarSetCapacity(sfi, sfi_size)
 
-; Loop through the files in the selected folder (central files only) and append them to the ListView:
+
+; set discipline and version defaults.   These should be moved to INI file later.
+DSCPLNDFLT = 
+VRSNDFLT = 
+VERSIONDFLT = 
+
+PREVIEWLOOPFILES:
 GuiControl, -Redraw, MyListView  ; Improve performance by disabling redrawing during load.
 Loop %FolderCentral%\*CENTRAL.rvt
+{
+    FileName := A_LoopFileFullPath  ; Must save it to a writable variable for use below.
+    ; Check if the discipline designator is acceptable and if so, add to the list view
+;commented out dscpln check
+
+    DSCPLN := SubStr(A_LoopFileName,-14,1)    						; Pick the 14th character to determine the discipline
+    StringUpper, DSCPLN, DSCPLN								; Capitalize discipline designator
+    If (DSCPLN = "A" OR DSCPLN = "S" OR DSCPLN = "M" OR DSCPLN = "E" OR DSCPLN = "P")	; If the Discipline Designator is correct, we add the file to the list view AND STORE NEW DEFAULTS FOR ARCH LINK FILES
+    {
+    DSCPLNDFLT := SubStr(A_LoopFileName,-14,1)
+    VRSNDFLT := SubStr(A_LoopFileName,-13,2)
+    VERSIONDFLT := 2000 + SubStr(A_LoopFileName,-13,2)
+    ; Create the new row in the ListView and assign it the icon number determined above:
+    FormatTime, DateCreated, %A_LoopFileTimeModified%, MM/dd/yyyy  hh:mm tt
+    LV_Add("Icon" . IconNumber, A_LoopFileName, DateCreated, A_LoopFileSizeKB " KB") ; FileExt
+    }
+}
+
+;check Links Folder folder
+Loop %FolderLinks%\*.rvt
 {
     FileName := A_LoopFileFullPath  ; Must save it to a writable variable for use below.
 
     ; Build a unique extension ID to avoid characters that are illegal in variable names,
     ; such as dashes.  This unique ID method also performs better because finding an item
-    ; in the array does not require search-loop.
-    SplitPath, FileName,,, FileExt  ; Get the file's extension.
-    if FileExt in EXE,ICO,ANI,CUR
-    {
-        ExtID := FileExt  ; Special ID as a placeholder.
-        IconNumber = 0  ; Flag it as not found so that these types can each have a unique icon.
-    }
-    else  ; Some other extension/file-type, so calculate its unique ID.
-    {
-        ExtID = 0  ; Initialize to handle extensions that are shorter than others.
-        Loop 7     ; Limit the extension to 7 characters so that it fits in a 64-bit value.
-        {
-            StringMid, ExtChar, FileExt, A_Index, 1
-            if not ExtChar  ; No more characters.
-                break
-            ; Derive a Unique ID by assigning a different bit position to each character:
-            ExtID := ExtID | (Asc(ExtChar) << (8 * (A_Index - 1)))
-        }
-        ; Check if this file extension already has an icon in the ImageLists. If it does,
-        ; several calls can be avoided and loading performance is greatly improved,
-        ; especially for a folder containing hundreds of files:
-        IconNumber := IconArray%ExtID%
-    }
-    if not IconNumber  ; There is not yet any icon for this extension, so load it.
-    {
-        ; Get the high-quality small-icon associated with this file extension:
-        if not DllCall("Shell32\SHGetFileInfoA", "str", FileName, "uint", 0, "str", sfi, "uint", sfi_size, "uint", 0x101)  ; 0x101 is SHGFI_ICON+SHGFI_SMALLICON
-            IconNumber = 9999999  ; Set it out of bounds to display a blank icon.
-        else ; Icon successfully loaded.
-        {
-            ; Extract the hIcon member from the structure:
-            hIcon = 0
-            Loop 4
-                hIcon += *(&sfi + A_Index-1) << 8*(A_Index-1)
-            ; Add the HICON directly to the small-icon and large-icon lists.
-            ; Below uses +1 to convert the returned index from zero-based to one-based:
-            IconNumber := DllCall("ImageList_ReplaceIcon", "uint", ImageListID1, "int", -1, "uint", hIcon) + 1
-            DllCall("ImageList_ReplaceIcon", "uint", ImageListID2, "int", -1, "uint", hIcon)
-            ; Now that it's been copied into the ImageLists, the original should be destroyed:
-            DllCall("DestroyIcon", "uint", hIcon)
-            ; Cache the icon to save memory and improve loading performance:
-            IconArray%ExtID% := IconNumber
-        }
-    }
+    ; in the array does not require search-loop.    ; Check if the discipline designator is acceptable and if so, add to the list view
+;commented out dscpln check
 
-
-    ; Check if the discipline designator is acceptable and if so, add to the list view
-
-    DSCPLN := SubStr(A_LoopFileName,-14,1)    						; Pick the 14th character to determine the discipline
-    StringUpper, DSCPLN, DSCPLN								; Capitalize discipline designator
-    If (DSCPLN = "A" OR DSCPLN = "S" OR DSCPLN = "M" OR DSCPLN = "E" OR DSCPLN = "P")	; If the Discipline Designator is correct, we add the file to the list view
-    {
+ ;   DSCPLN := SubStr(A_LoopFileName,-14,1)    						; Pick the 14th character to determine the discipline
+ ;   StringUpper, DSCPLN, DSCPLN								; Capitalize discipline designator
+ ;   If (DSCPLN = "A" OR DSCPLN = "S" OR DSCPLN = "M" OR DSCPLN = "E" OR DSCPLN = "P")	; If the Discipline Designator is correct, we add the file to the list view
+ ;   {
     ; Create the new row in the ListView and assign it the icon number determined above:
     FormatTime, DateCreated, %A_LoopFileTimeModified%, MM/dd/yyyy  hh:mm tt
-    LV_Add("Icon" . IconNumber, A_LoopFileName, DateCreated, A_LoopFileSizeKB " KB") ; FileExt
-    }
+    LV_Add("Icon" . IconNumber, "Link - "A_LoopFileName, DateCreated, A_LoopFileSizeKB " KB") ; FileExt
+ ;   }
 }
 
 GuiControl, +Redraw, MyListView  							; Re-enable redrawing (it was disabled above).
@@ -247,7 +193,7 @@ LV_ModifyCol(3, 60) 									; Make the Size column at little wider to reveal it
 }
 else
 {
-LV_Add("Icon" . 0, "No Central files were found! Navigate to another folder and try again", "")
+LV_Add("Icon" . 0, "No files were found! Check the Settings.ini file for Projects or Link locations", "")
 GuiControl, Disable, MyListView
 GuiControl, Hide, Instructions
 GuiControl, Disable, CreateShortcut
@@ -264,9 +210,7 @@ return
 MyListView:
 if A_GuiEvent = DoubleClick								; Default option is invoked (set in Settings.ini)
 {
-IfEqual, RCoption, 1, GoSub, RightClickOpen
-IfEqual, RCoption, 2, GoSub, RightClickSpecify
-IfEqual, RCoption, 3, GoSub, RightClickDetach
+GoSub, DefaultOpen
 }
 
 return
@@ -278,19 +222,10 @@ RowNumber := LV_GetNext()
 LV_GetText(CENTRALFILE, RowNumber, 1)
 return
 
-GuiContextMenu: ;---####----------------------Launched in response to a right-click or press of the Apps key.
+GuiContextMenu: ;---####----------------------Do Nothing on Right Click
+return
 
-if A_GuiControl <> MyListView  								; Display the menu only for clicks inside the ListView.
-    return
-											
-if % LV_GetCount("Selected")>0								; LV_GetCount ("Selected") returns the # of selected rows.
-{											; If one row is selected, the context menu displays.								
-Menu, MyContextMenu, Show, %A_GuiX%, %A_GuiY% 						; Show the menu at the provided coordinates, A_GuiX and A_GuiY.  These should be used
-return											; because they provide correct coordinates even if the user pressed the Apps key
-}
-
-
-RightClickOpen: ;---####-----------------------The user selected "Create Local & Open" in the context menu
+DefaultOpen: ;---####-----------------------The user selected "Create Local & Open" in the context menu
 
 3 = OPEN
 If % LV_GetCount("Selected")>0
@@ -310,29 +245,7 @@ If % LV_GetCount("Selected")>0
 }
 return
 
-
-RightClickSpecify: ;---####-----------------------The user selected "Create Local & Specify Worksets to open" in the context menu
-
-3 = WORKSETS
-If % LV_GetCount("Selected")>0
-{
-	GoSub, ReadGuiData
-	If CreateShortcut=1
-	{
-		;msgbox, Shortcut will be created for %CENTRALFILE% and local will be opened after specifiying worksets
-		scToolTip = Create & Open Local (Specify Worksets) for %CENTRALFILE%
-		Goto, CreateShorty
-	}
-	Else
-	{
-		;msgbox, Local for %CENTRALFILE% will be opened after specifying worksets (NO SHORTY!)
-		Goto, LocalOperations
-	}
-}
-return
-
-
-RightClickDetach: ;---####------------------------The user selected "Open a Detached Local copy" in the context menu
+DetachedOpen: ;---####------------------------The user selected "Open a Detached Local copy" in the context menu
 
 3 = DETACH
 If % LV_GetCount("Selected")>0
@@ -355,8 +268,16 @@ return
 
 CreateShorty: ;---####-----------------------------Create a Desktop Shortcut
 
-StringTrimRight, PARTFILE, CENTRALFILE, 12                                     ; Remove "_central.rvt" from filename string (12 characters)...
-
+IfInString, CENTRALFILE, CENTRAL
+{
+ StringTrimRight, PARTFILE, CENTRALFILE, 12                                     ; Remove "_central.rvt" from filename string (12 characters)...
+}
+else
+{
+ StringTrimRight, PARTFILE, CENTRALFILE, 4                                     ; Remove "_central.rvt" from filename string (12 characters)...
+}
+MsgBox, %PARTFILE%
+MsgBox, %CENTRALFILE%
 1 = SC
 if 3 <>
 {
@@ -400,9 +321,16 @@ Gui, Destroy
 
 IfNotExist, %FolderCentral%\%CENTRALFILE%
 {
-FileDelete, %SCpath%									; Delete the shortcut since it refers to a central file and path that don't exist anymore
+FolderCentral = %FolderLinks%
+ StringTrimLeft, CENTRALFILE, CENTRALFILE, 7
+
+DSCPLN = S
+DISCIPLINE = Structure
+IfNotExist, %FolderCentral%\%CENTRALFILE%
+{FileDelete, %SCpath%									; Delete the shortcut since it refers to a central file and path that don't exist anymore
 MsgBox, 16, Central File not found!, The Central File [%FolderCentral%\%CENTRALFILE%] was not found. `n`nPlease select a new Central File and create a new shortcut. `nFor your convenience, the old shortcut was deleted.
 Goto, CreateGui
+}
 }
 
 
@@ -413,15 +341,30 @@ VERSION := 2000 + SubStr(CENTRALFILE,-13,2)
 
 ;---#### Check if the local file that we're trying to create is already running. If so, a warning will be issued and execution will stop
 
+IfInString, CENTRALFILE, CENTRAL
+{
+ StringTrimRight, PARTFILE, CENTRALFILE, 12                                     ; Remove "_central.rvt" from filename string (12 characters)...
+}
+else
+{
+ StringTrimRight, PARTFILE, CENTRALFILE, 4                                     ; Remove ".rvt" from filename string (4 characters)...
+ ; Remove "Link - " from filename string (7 characters)...
 
-StringTrimRight, PARTFILE, CENTRALFILE, 12                                    	; Remove "_central.rvt" from filename string (12 characters)...
-
+ }
 DESTINATION = %FOLDERLOCALS%%PARTFILE%\						; Full path for this project's local file
 
 LOCALFILE = %PARTFILE%_%username%.rvt                                         	; and replace with "username.rvt"
 
 IniRead, RevitApp, %SettingsINI%, REVIT, %DSCPLN%%VRSN%
+MsgBox Revit App = %RevitApp%
+MsgBox Default Values: %DSCPLNDFLT%%VRSNDFLT%
+MsgBox Default Values: %DSCPLN%%VRSN%
+If RevitApp = ERROR						
+	{
+	IniRead, RevitApp, %SettingsINI%, REVIT, %DSCPLNDFLT%%VRSNDFLT%
+	}
 
+mSGBOX, DISPLAY REVITAPP VARIABLE: %REVITAPP%
 AppPath = %RevitApp%
 JournPath = %RevitApp%Journals\
 
@@ -538,12 +481,19 @@ If DSCPLN = P
 {
 DISCIPLINE = MEP
 }
-
+If InStr(CENTRAFILE, "\")
+{
+MsgBox Found backslash
+DSCPLN = S
+DISCIPLINE = Structure
+PARTFILE = %CENTRALFILE%
+}
 IfNotExist, %AppPath%Revit.exe							; This is true if Revit.exe is found in retrieved path (also if it was blank or "ERROR"). I'm checking for the executable as the folders remain after uninstalling!
 {
    if (RevitApp = "ERROR" or RevitApp = "")					; This is true if version doesn't exist in settings.ini or path is blank
    {
-   MsgBox, 20, Revit %DISCIPLINE% %VERSION% not found!, The path for Revit %DISCIPLINE% %VERSION% was not found in Settings.ini. `n`nDo you want to use another discipline's Revit %VERSION% application to open [%LOCALFILE%]?
+   MsgBox, HELP! %AppPath%Revit.exe
+   MsgBox, 20, Error 187902 Revit %DISCIPLINE% %VERSION% not found!, The path for Revit %DISCIPLINE% %VERSION% was not found in Settings.ini. `n`nDo you want to use another discipline's Revit %VERSION% application to open [%LOCALFILE%]?
    IfMsgBox No
 	{
 	RUN %A_ScriptDir%
@@ -626,12 +576,11 @@ FileMove, %DESTINATION%%CENTRALFILE%, %DESTINATION%%LOCALFILE%                 	
 
 ;msgbox, Central File=%CENTRALFILE% `nDiscipline=%DSCPLN% `nVersion=%VRSN% `nDestination=%Destination% `nPartfile=%partfile% `nCentral Folder=%FolderCentral% `n`nRevitApp=%RevitApp% `nAppPath=%AppPath%
 
-
 OPENLOCAL:
 
 If DSCPLN = A
 {
- DISCIPLINE = Architecture
+DISCIPLINE = Architecture
 }
 
 If DSCPLN = S
@@ -653,8 +602,13 @@ If DSCPLN = P
 {
 DISCIPLINE = MEP
 }
-
-
+If InStr(CENTRAFILE, "\")
+{
+MsgBox Found backslash
+DSCPLN = S
+DISCIPLINE = Structure
+PARTFILE = %CENTRALFILE%
+}
 ;---#### If the shortcut has the "DETACH" switch, we run this portion   ;, "IDOK", "..\..\..\Revit Local Files\%LOCALFILE%"
 OPENDETACHED:
 If 3 = DETACH         
@@ -665,9 +619,7 @@ If 3 = DETACH
 FileDelete C:\ProgramData\Autodesk\Revit\Addins\20%VRSN%\detachedopen.txt
 FileDelete C:\ProgramData\Autodesk\Revit\Addins\20%VRSN%\journal.*.*
 
-; Now we create the journal so Revit will create a detached copy, no questions asked. We have 2 versions as things have changed in 2010 journals.
-
-
+; Now we create the journal so Revit will create a detached copy, no questions asked.  This was last developed to work in 2017. 
 	FileAppend,
 	(
 	'
@@ -687,7 +639,6 @@ FileDelete C:\ProgramData\Autodesk\Revit\Addins\20%VRSN%\journal.*.*
 	Jrn.Data "File Name" , "IDOK", "%FolderCentral%\%CENTRALFILE%"
 	Jrn.Data "WorksetConfig" , "Custom", 0
 	Jrn.Data "TaskDialogResult" , "Detaching this model will create an independent model. You will be unable to synchronize your changes with the original central model." & vbLf & "What do you want to do?", "Detach and preserve worksets", "1001"
-	Jrn.Directive "DebugMode", "PerformAutomaticActionInErrorDialog", 0
 	), C:\ProgramData\Autodesk\Revit\Addins\20%VRSN%\detachedopen.txt
 
 ; Open Revit Discipline 20XX and open a detached copy
@@ -699,89 +650,53 @@ FileDelete C:\ProgramData\Autodesk\Revit\Addins\20%VRSN%\journal.*.*
    Goto, SPLASHSCREEN
 }
 
-;---#### If the shortcut has the "WORKSETS" switch, we run this portion
+;---#### If the shortcut has an invalid or no switch, we open local as usual.  I removed the Worksets option from the code
 
-;If 3 = WORKSETS
-;{
-;FileDelete %JournPath%select_ws.txt
+combinedstringoflicensetypes  = 
+Loop Files, C:\ProgramData\Autodesk\CLM\LGS\LGS.data, R  ; Recurse into subfolders.
+{
+	FileRead, output, %A_LoopFileFullPath%
+	combinedstringoflicensetypes = %combinedstringoflicensetypes%%output%
+}
 
-; Now we create the journal so Revit will prompt us to open select worksets
-
-;FileAppend, 
-;(
-;'
-;Dim Jrn
-;Set Jrn = CrsJournalScript
-;Jrn.Command "Menu" , "Open an existing project , 57601 , ID_REVIT_FILE_OPEN"
-;Jrn.Data "File Name"  _
-;, "IDOK", "%DESTINATION%%LOCALFILE%"
-;Jrn.Data "WorksetConfig"  _
-;, "Editable", 0
-;  Jrn.Data "MessageBox"  _;
-;		  , "IDOK", "This Central File has been copied or moved from ""%FolderCentral%\%CENTRALFILE%"" to ""%DESTINATION%%LOCALFILE%""." & vbCrLf & "" & vbCrLf & "If you wish this file to remain a Central File then you must re-save the file as a Central File. To do this select ""Save As"" from the ""File"" menu and check the ""Make this a Central File after save"" check box (under the options button) before you save." & vbCrLf & "" & vbCrLf & "If you do not save the file as a Central File then it will be considered a local user copy of the file belonging to user ""%Username%""."
-;Jrn.Command "Menu" , "Workset control , 33460 , ID_SETTINGS_PARTITIONS"
-;), %JournPath%select_ws.txt
-;
-; Open Revit Discipline 20XX and open the file; worksets dialog pops up at the end
-;    Run %AppPath%Revit.exe "%JournPath%select_ws.txt",,max
-;    Goto, SPLASHSCREEN
-;}
-
-;---#### If the shortcut has an invalid or no switch, we open local as usual
 
 SetTitleMatchMode 2
 
 IfWinExist Revit %DISCIPLINE% %VERSION%
 {
 ; Activate Revit Discipline 20XX and open the file
-    WinMaximize
+    MsgBox, Line805
+	WinMaximize
     Run %DESTINATION%%LOCALFILE%,,max
     Goto, FINISHUP
 }
 else
 {
 ; Open Revit Discipline 20XX and open the file
-
-MsgBox, 4,, Would you like to open in Viewer Mode only?
-    IfMsgBox, No
+    ifInString, combinedstringoflicensetypes, _NETWORK 
+	{
+		MsgBox, 0,Temp Message Box for Testing, %combinedstringoflicensetypes% : Network license found will ask about viewer mode. 
+		MsgBox, 4,, Would you like to open in Viewer Mode only?
+		IfMsgBox, No
 		{
-		IfExist, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%\Revit.ini ;We need to test if the contents of the folder exists
-			{
-			;MsgBox, The target file does exist we will use it. 
-			;if yes then use it
-			FileMove, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%\Revit.ini, %appdata%\Autodesk\Revit\Autodesk Revit 20%VRSN%\Revit.ini, 1
-			FileMove, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%\KeyboardShortcuts.xml, %appdata%\Autodesk\Revit\Autodesk Revit 20%VRSN%\KeyboardShortcuts.xml, 1
-			}
-		else
-			{
-			;if no fill use them (copy down)
-			;MsgBox, the target file does not exist.  We arent going to do anything.
-			
-			}
-			
+		MsgBox, Line816
 		Run %AppPath%Revit.exe "%DESTINATION%%LOCALFILE%",,max
 		}
-		
-		
-	IfMsgBox, Yes ; use revit viewer
-		{
-		IfExist, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%\Revit.ini ;Using viewer if contents of the folder exist, do nothing
-			{
-			;MsgBox, The target file does exist and so we wont make another copy 
-			;if skip
-			}
 		else
-			{
-			;if yes skip
-			;MsgBox, The target file does not exist so we will copy it into the folder. 
-			FileCreateDir, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%
-			FileCopy, %appdata%\Autodesk\Revit\Autodesk Revit 20%VRSN%\Revit.ini, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%\, 0
-			FileCopy, %appdata%\Autodesk\Revit\Autodesk Revit 20%VRSN%\KeyboardShortcuts.xml, %appdata%\Autodesk\Revit\SettingsBackupforJournalFile\Autodesk Revit 20%VRSN%\, 0
-			}
-			;We need to test if the contents of the folder are empty
+		{
+			MsgBox, Line821
+			;Run %AppPath%Revit.exe /viewer "%DESTINATION%%LOCALFILE%",,max
 			3 = DETACH
 			Goto, OPENDETACHED
 		}
+	}
+	ifNotInString, combinedstringoflicensetypes, _NETWORK 
+	{
+		MsgBox, 0,Temp Message Box for Testing, %combinedstringoflicensetypes% : No network license found viewer mode request will be skipped.
+		MsgBox, Line816
+		Run %AppPath%Revit.exe "%DESTINATION%%LOCALFILE%",,max
+		
+	}
 }
 
 
